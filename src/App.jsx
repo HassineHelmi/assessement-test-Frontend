@@ -4,6 +4,7 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import Login from './components/Login'
 import validator from 'validator'
+import { SyntheticEvent } from 'react'
 
 function App() {
   
