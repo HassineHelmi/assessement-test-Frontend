@@ -80,12 +80,10 @@ export default function Login() {
               onChange={handleChange}
             />
           </div>
-          <div className="flex justify-between text-gray-400 py-3">
-            
-          </div>
+          <div className="flex justify-between text-gray-400 py-3"></div>
           <button
             type="submit"
-            className="w-full my-5 py-2 bg-teal-500 rounded-xl shadow-lg shadow-teal-500/50" 
+            className="w-full my-5 py-2 bg-teal-500 rounded-xl shadow-lg shadow-teal-500/50"
           >
             Sign In
           </button>
