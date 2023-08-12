@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import LoginImage from "../assets/LoginImage.jpg";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
-  const history = useHistory();
-
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  const [errorMessage, setErrorMessage] = useState(""); // New state for error message
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const navigate = useNavigate(); // Get the navigate function
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,15 +33,17 @@ export default function Login() {
         const data = await response.json();
         localStorage.setItem("access_token", data.access_token);
 
-        // Use the history object to navigate to the dashboard
-        history.push("/dashboard");
+        // Navigate to the dashboard page
+        navigate("/dashboard");
       } else {
         const errorData = await response.json();
-        setErrorMessage(errorData.message);
+        // Set the error message received from the server or default message
+        setErrorMessage(errorData.message || "An error occurred during login.");
       }
     } catch (error) {
-      // Handle error
+      // Handle network or other errors
       console.error("Error:", error);
+      setErrorMessage("An error occurred during login.");
     }
   };
 
@@ -79,10 +81,7 @@ export default function Login() {
             />
           </div>
           <div className="flex justify-between text-gray-400 py-3">
-            <p className="flex items-center">
-              <input className="mr-2" type="checkbox" />
-              Remember Me
-            </p>
+            
           </div>
           <button
             type="submit"
