@@ -1,23 +1,15 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
-import { useState, useEffect } from "react";
-import Dashboard from "../components/Dashboard";
+import { Navigate } from "react-router-dom";
 
 const ProtectedRoute = ({ component }) => {
-  const [accessToken, setAccessToken] = useState(null);
+  const accessToken = localStorage.getItem("access_token");
 
-  useEffect(() => {
-    const accessToken = localStorage.getItem("access_token");
-    setAccessToken(accessToken);
-  }, []);
-
+  // Check for access token and render the component or navigate
   if (!accessToken) {
-    return <Redirect to="/" />;
+    return <Navigate to="/login" />;
   }
 
-  return (
-    <Route path="/src/components/Dashboard.jsx" element={component} />
-  );
+  return component;
 };
 
 export default ProtectedRoute;

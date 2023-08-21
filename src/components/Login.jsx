@@ -33,6 +33,8 @@ export default function Login() {
         const data = await response.json();
         localStorage.setItem("access_token", data.access_token);
 
+        console.log("Access token set:", data.access_token);
+
         // Navigate to the dashboard page
         navigate("/dashboard");
       } else {
