@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useUser } from "../Login/UserContext"; // Import the useUser hook
+import { useUser } from "../hooks/UserContext"; // Import the useUser hook
 
 export default function LogoutButton() {
   const navigate = useNavigate();
