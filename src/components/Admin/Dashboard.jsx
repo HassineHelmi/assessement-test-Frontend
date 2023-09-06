@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import LogoutButton from "../components/LogoutButton";
-import AddJobOfferForm from "../components/AddJobOfferForm";
+import LogoutButton from "./LogoutButton";
+import AddJobOfferForm from "./AddJobOfferForm";
 import { Link } from "react-router-dom";
 
 export default function Dashboard() {

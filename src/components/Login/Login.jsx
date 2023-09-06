@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import LoginImage from "../assets/LoginImage.jpg";
+import LoginImage from "../../assets/LoginImage.jpg";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
