@@ -3,35 +3,34 @@ import { Link } from "react-router-dom";
 
 const ManageJobOffers = () => {
   const [jobOffers, setJobOffers] = useState([]);
+  const [error, setError] = useState(null); // State for handling errors
 
   useEffect(() => {
     // Fetch job offers from API and update the state
     // Example:
     // fetchJobOffers().then((offers) => setJobOffers(offers));
-    const dummyJobOffers = [
-      {
-        id: 1,
-        jobTitle: "Software Developer",
-        description: "Join our team as a software developer...",
-        deadline: "2023-09-30",
-        status: "open",
+    const accessToken =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiYWRtaW5AYWRtaW4uY29tIiwiaWF0IjoxNjkxMTY0NTg4LCJleHAiOjE2OTExNzE3ODh9.Fr7kZb5jc77Xv0WS9ZsiV912B0fU6sFIp7-TfGgD_m"; // Replace with your actual access token
+
+    fetch("http://localhost:3000/job-offers", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${accessToken}`, // Include the access token
       },
-      // Add more job offers
-    ];
-    setJobOffers(dummyJobOffers);
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((offers) => {
+        setJobOffers(offers);
+      })
+      .catch((error) => {
+        setError(error); // Handle API request error
+      });
   }, []);
-
-  const handleUpdate = (offerId) => {
-    // Implement logic to navigate to the update page for the selected offer
-  };
-
-  const handleClose = (offerId) => {
-    // Implement logic to close the selected offer
-  };
-
-  const handleDelete = (offerId) => {
-    // Implement logic to delete the selected offer
-  };
 
   return (
     <div className="bg-gray-800 h-screen p-10">
@@ -46,40 +45,21 @@ const ManageJobOffers = () => {
       </div>
       <ul>
         {jobOffers.map((offer) => (
-          <li
-            key={offer.id}
-            className="bg-white p-4 mb-4 rounded-lg shadow-md"
-          >
+          <li key={offer.id} className="bg-white p-4 mb-4 rounded-lg shadow-md">
             <h3 className="text-lg font-semibold">{offer.jobTitle}</h3>
             <p className="text-gray-600">{offer.description}</p>
             <p className="text-gray-500">
               Deadline: {new Date(offer.deadline).toLocaleDateString()}
             </p>
-            <p className={`mt-2 ${offer.status === "closed" ? "text-red-500" : "text-green-500"}`}>
+            <p
+              className={`mt-2 ${
+                offer.status === "closed" ? "text-red-500" : "text-green-500"
+              }`}
+            >
               Status: {offer.status === "closed" ? "Closed" : "Open"}
             </p>
             <div className="mt-2">
-              <button
-                className="text-teal-500 hover:underline mr-2"
-                onClick={() => handleUpdate(offer.id)}
-              >
-                Update
-              </button>
-              <button
-                className={`${
-                  offer.status === "closed" ? "text-gray-500" : "text-red-500"
-                } hover:underline mr-2`}
-                onClick={() => handleClose(offer.id)}
-                disabled={offer.status === "closed"}
-              >
-                Close
-              </button>
-              <button
-                className="text-red-500 hover:underline"
-                onClick={() => handleDelete(offer.id)}
-              >
-                Delete
-              </button>
+              {/* Add your update, close, and delete buttons */}
             </div>
           </li>
         ))}

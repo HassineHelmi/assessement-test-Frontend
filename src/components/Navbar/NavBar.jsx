@@ -26,11 +26,19 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-indigo-600 p-4">
+    <nav className="bg-indigo-600 p-4 sticky top-0 z-10">
       <div className="container mx-auto flex justify-between items-center">
-        <Link to="/dashboard" className="text-white text-2xl font-bold">
-          Welcome to JobHub
-        </Link>
+        <div className="flex items-center">
+          <div className="text-3xl cursor-pointer flex items-center ">
+            <ion-icon name="logo-ionic" className=""></ion-icon>
+            <Link
+              to="/dashboard"
+              className="text-white text-2xl font-bold ml-2"
+            >
+              JobHub
+            </Link>
+          </div>
+        </div>
         {/* Mobile menu button (shown on small screens) */}
         <button
           onClick={toggleMobileMenu}
