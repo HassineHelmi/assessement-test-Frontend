@@ -17,12 +17,5 @@ export default function LogoutButton() {
     navigate("/login");
   };
 
-  return (
-    <button
-      className="my-3 px-4 py-2 bg-red-500 text-white rounded-lg"
-      onClick={handleLogout}
-    >
-      Logout
-    </button>
-  );
+  
 }

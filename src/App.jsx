@@ -4,27 +4,32 @@ import Login from "./components/Login/Login";
 import ProtectedRoute from "./components/Login/ProtectedRoute";
 import Dashboard from "./components/Admin/Dashboard";
 import ManageJobOffers from "./components/Admin/ManageJobOffers";
-import { UserProvider } from "./components/hooks/UserContext"; // Import the UserProvider
-import LogoutButton from "./components/Admin/LogoutButton";
+import { UserProvider } from "./components/hooks/UserContext";
+import Layout from "./components/layout/layout"; // Import the Layout component
 
 function App() {
   return (
     <Router>
-      <UserProvider> {/* Wrap your app with UserProvider to manage user authentication */}
+      <UserProvider>
         <Routes>
-          {/* Define routes for different pages */}
-          <Route path="/" element={<Login />} /> {/* Landing page */}
+          <Route path="/" element={<Login />} />
           <Route
             path="/dashboard/*"
             element={
-              <>
+              <Layout>
                 <ProtectedRoute component={<Dashboard />} />
-                <LogoutButton /> {/* Render the LogoutButton component only on the dashboard */}
-              </>
+              </Layout>
             }
-          /> {/* Protected dashboard page */}
-          <Route path="/manage-job-offers" element={<ManageJobOffers />} /> {/* Job offers page */}
-          <Route path="/login" element={<Login />} /> {/* Login page */}
+          />
+          <Route
+            path="/manage-job-offers"
+            element={
+              <Layout>
+                <ManageJobOffers />
+              </Layout>
+            }
+          />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </UserProvider>
     </Router>
