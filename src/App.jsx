@@ -7,6 +7,10 @@ import ManageJobOffers from "./components/Admin/ManageJobOffers";
 import { UserProvider } from "./components/hooks/UserContext";
 import Layout from "./components/layout/layout"; // Import the Layout component
 
+
+
+
+
 function App() {
   return (
     <Router>
@@ -18,6 +22,7 @@ function App() {
             element={
               <Layout>
                 <ProtectedRoute component={<Dashboard />} />
+                
               </Layout>
             }
           />
@@ -30,8 +35,10 @@ function App() {
             }
           />
           <Route path="/login" element={<Login />} />
+          
         </Routes>
       </UserProvider>
+      
     </Router>
   );
 }

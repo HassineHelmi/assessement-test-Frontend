@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 const AddJobOfferForm = () => {
   const [formData, setFormData] = useState({
     jobTitle: "",
     description: "",
-    deadline: "",
+    applicationDeadline: "",
   });
 
   const navigate = useNavigate();
@@ -17,25 +16,27 @@ const AddJobOfferForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // API request to create a new job offer
+  
     try {
       const response = await fetch("http://localhost:3000/job-offers", {
         method: "POST",
         headers: {
+          Authorization: "Bearer " + localStorage.getItem("access_token"),
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
-
+  
       if (response.ok) {
         // Handle success
         navigate("/dashboard");
       } else {
-        // Handle error
-        console.error("Error creating job offer");
+        // Handle error response
+        const errorData = await response.json();
+        console.error("Error creating job offer:", errorData);
       }
     } catch (error) {
+      // Handle network or other errors
       console.error("Error creating job offer", error);
     }
   };
@@ -50,7 +51,7 @@ const AddJobOfferForm = () => {
             className="form-input mt-1 block w-full p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring focus:border-teal-500"
             type="text"
             name="jobTitle"
-            value={formData.jobTitle}
+            value={formData.jobTitle} // Set the controlled value
             onChange={handleChange}
             required
           />
@@ -61,7 +62,7 @@ const AddJobOfferForm = () => {
             className="form-textarea mt-1 block w-full p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring focus:border-teal-500"
             rows="4"
             name="description"
-            value={formData.description}
+            value={formData.description} // Set the controlled value
             onChange={handleChange}
             required
           />
@@ -71,8 +72,8 @@ const AddJobOfferForm = () => {
           <input
             className="form-input mt-1 block w-full p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring focus:border-teal-500"
             type="date"
-            name="deadline"
-            value={formData.deadline}
+            name="applicationDeadline"
+            value={formData.applicationDeadline} // Set the controlled value
             onChange={handleChange}
             required
           />
