@@ -1,44 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Pagination from "./Pagination";
-
+import EditJobOffer from "./EditJobOffer";
+import EditJobOfferPage from "./EditJobOfferPage";
+import { jobOfferService } from "../../api/jobOfferService";
 const ManageJobOffers = () => {
   const [jobOffers, setJobOffers] = useState([]);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState({});
   const [formData, setFormData] = useState({
     jobTitle: "",
     description: "",
-    deadline: "",
+    applicationDeadline: "",
   });
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("access_token");
-
     const fetchJobOffers = async (page) => {
-      const limit = 10; // Fixed limit
       try {
-        const response = await fetch(
-          `http://localhost:3000/job-offers?page=${page}&limit=${limit}`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: "Bearer " + accessToken,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-
-        const data = await response.json();
+        const data = await jobOfferService.getMany(page);
         setJobOffers(data);
-        setTotalPages(Math.ceil(data.length / limit));
+        setTotalPages(Math.ceil(data.length / 10));
       } catch (error) {
         setError(error);
       }
@@ -50,10 +34,6 @@ const ManageJobOffers = () => {
   const handlePageChange = (currentPage) => {
     setCurrentPage(currentPage);
   };
-
- 
-
- 
 
   const toggleJobStatus = async (jobOffer) => {
     const accessToken = localStorage.getItem("access_token");
@@ -88,7 +68,6 @@ const ManageJobOffers = () => {
 
   const deleteJobOffer = async (jobOffer) => {
     const accessToken = localStorage.getItem("access_token");
-    
 
     try {
       const response = await fetch(
@@ -108,6 +87,37 @@ const ManageJobOffers = () => {
       // Remove the deleted job offer from the jobOffers state
       setJobOffers((prevJobOffers) =>
         prevJobOffers.filter((offer) => offer.id !== jobOffer.id)
+      );
+    } catch (error) {
+      setError(error);
+    }
+  };
+
+  const editJobOffer = async (jobOfferId, updatedData) => {
+    const accessToken = localStorage.getItem("access_token");
+
+    try {
+      const response = await fetch(
+        `http://localhost:3000/job-offers/${jobOfferId}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: "Bearer " + accessToken,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedData),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      // Update the jobOffers state with the updated job offer data
+      setJobOffers((prevJobOffers) =>
+        prevJobOffers.map((offer) =>
+          offer.id === jobOfferId ? { ...offer, ...updatedData } : offer
+        )
       );
     } catch (error) {
       setError(error);
@@ -160,6 +170,8 @@ const ManageJobOffers = () => {
                   Delete
                 </button>
               )}
+              {/* Button to edit job offer */}
+              <EditJobOffer jobOffer={offer} onEdit={editJobOffer} />
             </div>
           </li>
         ))}

@@ -7,6 +7,7 @@ const AddJobOfferForm = () => {
     description: "",
     applicationDeadline: "",
   });
+
   const [message, setMessage] = useState(""); // State to store the success message
 
   const navigate = useNavigate();
@@ -32,7 +33,8 @@ const AddJobOfferForm = () => {
       if (response.ok) {
         // Handle success
         setMessage("Job offer created successfully!");
-        setFormData({ // Clear the form fields
+        setFormData({
+          // Clear the form fields
           jobTitle: "",
           description: "",
           applicationDeadline: "",
@@ -66,7 +68,9 @@ const AddJobOfferForm = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 font-semibold">Description</label>
+          <label className="block text-gray-700 font-semibold">
+            Description
+          </label>
           <textarea
             className="form-textarea mt-1 block w-full p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring focus:border-teal-500"
             rows="4"
